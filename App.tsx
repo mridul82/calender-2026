@@ -31,10 +31,14 @@ const App: React.FC = () => {
     if (!loading && year === new Date().getFullYear()) {
       const currentMonth = new Date().getMonth();
       const isMobile = window.innerWidth < 768;
-      if (isMobile && monthRefs.current[currentMonth]) {
+      if (isMobile) {
+        // Longer timeout to ensure DOM is fully rendered
         setTimeout(() => {
-          monthRefs.current[currentMonth]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
+          const element = monthRefs.current[currentMonth];
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 500);
       }
     }
   }, [loading, year]);
@@ -76,8 +80,8 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between md:justify-end gap-2 md:gap-4">
-            <div className="flex items-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 rounded-xl md:rounded-2xl p-1 md:p-1.5 shadow-xl shadow-gray-900/20">
+          <div className="flex items-center justify-center md:justify-end gap-2 md:gap-4">
+            <div className="flex items-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 rounded-xl md:rounded-2xl p-1 md:p-1.5 shadow-xl shadow-gray-900/20 h-10 md:h-auto">
               <button
                 onClick={() => changeYear(-1)}
                 className="p-2 md:p-2.5 hover:bg-white/10 rounded-lg md:rounded-xl transition-all text-white/50 hover:text-white active:scale-95"
@@ -86,7 +90,7 @@ const App: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <span className="px-3 md:px-6 font-black text-lg md:text-3xl text-white month-title italic">{year}</span>
+              <span className="px-2 md:px-6 font-black text-base md:text-3xl text-white month-title italic min-w-[60px] md:min-w-0 text-center">{year}</span>
               <button
                 onClick={() => changeYear(1)}
                 className="p-2 md:p-2.5 hover:bg-white/10 rounded-lg md:rounded-xl transition-all text-white/50 hover:text-white active:scale-95"
@@ -99,7 +103,7 @@ const App: React.FC = () => {
 
             <button
               onClick={handlePrint}
-              className="group relative flex items-center gap-2 md:gap-3 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white px-3 py-2 md:px-6 md:py-3.5 rounded-xl md:rounded-2xl hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all shadow-xl shadow-red-500/30 active:scale-95 overflow-hidden"
+              className="group relative flex items-center justify-center gap-2 md:gap-3 bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white px-3 h-10 md:h-auto md:px-6 md:py-3.5 rounded-xl md:rounded-2xl hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all shadow-xl shadow-red-500/30 active:scale-95 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
