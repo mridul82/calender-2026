@@ -75,7 +75,7 @@ const MonthView: React.FC<MonthViewProps> = ({ year, monthIndex, monthName, holi
 
         {/* Holiday Name */}
         {holiday && (
-          <span className={`text-[6px] md:text-[7px] leading-tight text-center px-0.5 truncate max-w-full ${isAssamese ? 'text-orange-600' : 'text-red-600'}`}>
+          <span className={`relative z-10 text-[6px] md:text-[7px] leading-tight text-center px-0.5 truncate max-w-full ${isAssamese ? 'text-orange-600' : 'text-red-600'}`}>
             {holiday.name.length > 10 ? holiday.name.substring(0, 10) + '..' : holiday.name}
           </span>
         )}
