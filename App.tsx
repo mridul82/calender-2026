@@ -14,6 +14,8 @@ const App: React.FC = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -25,6 +27,37 @@ const App: React.FC = () => {
     };
     loadHolidays();
   }, [year]);
+
+  // PWA Install Prompt
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      // Check if user has dismissed the prompt before
+      const dismissed = localStorage.getItem('pwa-install-dismissed');
+      if (!dismissed) {
+        setTimeout(() => setShowInstallPrompt(true), 2000);
+      }
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setShowInstallPrompt(false);
+    }
+    setDeferredPrompt(null);
+  };
+
+  const dismissInstallPrompt = () => {
+    setShowInstallPrompt(false);
+    localStorage.setItem('pwa-install-dismissed', 'true');
+  };
 
   // Auto-scroll to current month on mobile after loading
   useEffect(() => {
@@ -56,6 +89,42 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* PWA Install Prompt Banner */}
+      {showInstallPrompt && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 bg-gradient-to-r from-gray-900 to-gray-800 text-white p-4 rounded-2xl shadow-2xl border border-white/10 animate-slide-up no-print">
+          <div className="flex items-start gap-3">
+            <div className="bg-gradient-to-br from-red-500 to-orange-500 p-2 rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-sm">Add to Home Screen</p>
+              <p className="text-xs text-gray-400 mt-1">Install this calendar app for quick access anytime!</p>
+            </div>
+            <button onClick={dismissInstallPrompt} className="text-gray-500 hover:text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="flex gap-2 mt-3">
+            <button
+              onClick={dismissInstallPrompt}
+              className="flex-1 px-3 py-2 text-xs font-bold text-gray-400 hover:text-white transition-colors"
+            >
+              Not now
+            </button>
+            <button
+              onClick={handleInstallClick}
+              className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold rounded-xl hover:from-red-600 hover:to-orange-600 transition-all active:scale-95"
+            >
+              Install App
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Gamusa-inspired Top Border */}
       <div className="h-2 w-full gamusa-pattern no-print"></div>
 
