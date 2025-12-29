@@ -1,5 +1,7 @@
 {
   "name": "Assamese & National Indian Calendar",
-  "description": "A comprehensive yearly calendar application featuring Indian national and Assamese regional holidays, optimized for viewing and high-quality printing.",
+  "description": "A high-fidelity yearly calendar with AI-powered holiday synchronization for Indian national and Assamese regional festivals.",
+  "version": "1.0.0",
+  "author": "Senior Frontend Engineer",
   "requestFramePermissions": []
 }
