@@ -63,12 +63,12 @@ const MonthView: React.FC<MonthViewProps> = ({ year, monthIndex, monthName, holi
       >
         {/* Today Highlight */}
         {isTodayDate && (
-          <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-red-500 to-red-700 -z-10 shadow-lg shadow-red-300"></div>
+          <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-red-500 to-red-700 z-0 shadow-lg shadow-red-300"></div>
         )}
 
         {/* Holiday Highlight Background */}
         {holiday && !isTodayDate && (
-          <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 md:w-9 md:h-9 rounded-full ${isAssamese ? 'bg-gradient-to-br from-orange-200 to-amber-100' : 'bg-gradient-to-br from-red-200 to-pink-100'} -z-10`}></div>
+          <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 md:w-9 md:h-9 rounded-full ${isAssamese ? 'bg-gradient-to-br from-orange-200 to-amber-100' : 'bg-gradient-to-br from-red-200 to-pink-100'} z-0`}></div>
         )}
 
         <span className="relative z-10">{day}</span>
