@@ -27,6 +27,24 @@ const getMonthTheme = (index: number) => {
   return themes[index];
 };
 
+const getMonthIcon = (index: number): string => {
+  const icons = [
+    '🎊', // Jan - New Year celebrations
+    '💕', // Feb - Valentine's/Love
+    '🌸', // Mar - Spring/Holi
+    '🦏', // Apr - Bihu (Assamese New Year) - Rhino represents Assam
+    '☀️', // May - Summer heat
+    '🌧️', // Jun - Monsoon begins
+    '🌈', // Jul - Monsoon/Rainbow
+    '🇮🇳', // Aug - Independence Day
+    '🪔', // Sep - Festivals begin
+    '🙏', // Oct - Durga Puja
+    '✨', // Nov - Diwali
+    '❄️', // Dec - Winter
+  ];
+  return icons[index];
+};
+
 const isToday = (year: number, monthIndex: number, day: number) => {
   const today = new Date();
   return today.getFullYear() === year && today.getMonth() === monthIndex && today.getDate() === day;
@@ -97,7 +115,7 @@ const MonthView: React.FC<MonthViewProps> = ({ year, monthIndex, monthName, holi
   return (
     <div className="month-card paper-texture rounded-3xl shadow-2xl overflow-hidden border border-gray-100 flex flex-col transform hover:-translate-y-2 hover:shadow-3xl transition-all duration-300 group/card">
       {/* Month Header */}
-      <div className={`bg-gradient-to-r ${theme.gradient} p-5 text-center relative overflow-hidden`}>
+      <div className={`bg-gradient-to-r ${theme.gradient} p-4 md:p-5 text-center relative overflow-hidden`}>
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-20">
           <div className="absolute top-2 left-4 w-12 h-12 border-2 border-white/30 rounded-full"></div>
@@ -105,8 +123,11 @@ const MonthView: React.FC<MonthViewProps> = ({ year, monthIndex, monthName, holi
           <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-white/10 rounded-full"></div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"></div>
-        <h3 className="month-title text-2xl md:text-3xl font-black text-white tracking-wide uppercase italic relative z-10 drop-shadow-lg">{monthName}</h3>
-        <div className="text-white/70 text-[11px] font-bold tracking-[0.3em] uppercase mt-1 relative z-10">{year}</div>
+        <div className="flex items-center justify-center gap-2 md:gap-3 relative z-10">
+          <span className="text-2xl md:text-3xl drop-shadow-lg">{getMonthIcon(monthIndex)}</span>
+          <h3 className="month-title text-xl md:text-3xl font-black text-white tracking-wide uppercase italic drop-shadow-lg">{monthName}</h3>
+        </div>
+        <div className="text-white/70 text-[10px] md:text-[11px] font-bold tracking-[0.3em] uppercase mt-1 relative z-10">{year}</div>
       </div>
 
       {/* Weekday Labels */}
